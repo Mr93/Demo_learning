@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, OrderActivity.class);
+                intent.putExtra("type","PIZZA");
                 startActivity(intent);
             }
         });

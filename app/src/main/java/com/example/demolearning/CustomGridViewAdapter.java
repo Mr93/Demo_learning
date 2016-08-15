@@ -48,11 +48,22 @@ public class CustomGridViewAdapter extends ArrayAdapter<Item> {
         }
         Item item = data.get(position);
         recordHolder.imageView.setImageBitmap(item.getImageView());
+        recordHolder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "Order success", Toast.LENGTH_SHORT).show();
+            }
+        });
         return row;
     }
 
     class RecordHolder {
         ImageView imageView;
         Button button;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }
