@@ -2,6 +2,8 @@ package com.example.demolearning;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +20,13 @@ import java.util.PriorityQueue;
 /**
  * Created by mamram on 8/14/2016.
  */
-public class CustomGridViewAdapter extends ArrayAdapter<Item> {
+public class CustomGridViewAdapter extends ArrayAdapter<Drawable> {
     private static final String TAG = CustomGridViewAdapter.class.getSimpleName();
     Context context;
     int layoutResourceId;
-    ArrayList<Item> data = new ArrayList<>();
+    ArrayList<Drawable> data = new ArrayList<>();
 
-    public CustomGridViewAdapter(Context context, int resource, ArrayList<Item> objects) {
+    public CustomGridViewAdapter(Context context, int resource, ArrayList<Drawable> objects) {
         super(context, resource, objects);
         this.context = context;
         this.layoutResourceId = resource;
@@ -32,7 +34,7 @@ public class CustomGridViewAdapter extends ArrayAdapter<Item> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         RecordHolder recordHolder = null;
 
@@ -43,15 +45,17 @@ public class CustomGridViewAdapter extends ArrayAdapter<Item> {
             recordHolder.imageView = (ImageView) row.findViewById(R.id.item_img);
             recordHolder.button = (Button)row.findViewById(R.id.item_button);
             row.setTag(recordHolder);
+            Log.d(TAG, "getView: " + data.get(position));
         }else {
             recordHolder = (RecordHolder)row.getTag();
         }
-        Item item = data.get(position);
-        recordHolder.imageView.setImageBitmap(item.getImageView());
+        recordHolder.imageView.setImageDrawable(data.get(position));
+        final RecordHolder finalRecordHolder = recordHolder;
         recordHolder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Order success", Toast.LENGTH_SHORT).show();
+                finalRecordHolder.imageView.setImageDrawable(data.get(position));
+                Log.d(TAG, "onClick: " + data.get(position));
             }
         });
         return row;

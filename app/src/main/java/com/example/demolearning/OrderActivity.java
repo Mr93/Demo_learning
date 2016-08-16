@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 public class OrderActivity extends AppCompatActivity {
     private static final String TAG = OrderActivity.class.getSimpleName() ;
     private GridView gridView;
-    private ArrayList<Item> itemArrayList = new ArrayList<>();
+    private ArrayList<Drawable> itemArrayList = new ArrayList<>();
     CustomGridViewAdapter customGridViewAdapter;
     private static final String PIZZA = "PIZZA";
     private static final String HOT_POT = "HOT_POT";
@@ -57,7 +59,7 @@ public class OrderActivity extends AppCompatActivity {
         if(type.equalsIgnoreCase(PIZZA)){
             createPizzaData();
             toolbar.setTitle(PIZZA);
-        }else if (type.equalsIgnoreCase(HOT_POT)){
+        }/*else if (type.equalsIgnoreCase(HOT_POT)){
             createHotPotData();
             toolbar.setTitle(HOT_POT);
         }else if (type.equalsIgnoreCase(BBQ)){
@@ -66,7 +68,7 @@ public class OrderActivity extends AppCompatActivity {
         }else {
             createBeverageData();
             toolbar.setTitle(BEVERAGE);
-        }
+        }*/
     }
 
     private void createPizzaData(){
@@ -78,16 +80,16 @@ public class OrderActivity extends AppCompatActivity {
                 "http://www.pizzahut-tt.com/wp-content/uploads/2013/06/pizza-hut-trinidad-and-tobago-pepperoni-lovers-pizza.png"};
         for(int i = 0; i<urls.length; i++){
             Bitmap imageView = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
-            Item item = new Item(imageView);
-            itemArrayList.add(item);
+            Drawable drawable = new DrawableProxy(new BitmapDrawable(getResources(), imageView), this, urls[i]);
+            itemArrayList.add(((DrawableProxy)drawable));
         }
-        for(int i = 0; i < urls.length; i++){
+        /*for(int i = 0; i < urls.length; i++){
             Log.d(TAG, "createPizzaData: " + itemArrayList.get(i));
             new DownloadImageTask(this, itemArrayList.get(i)).execute(urls[i]);
-        }
+        }*/
     }
 
-    private void createHotPotData(){
+    /*private void createHotPotData(){
         Bitmap imageView = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
 
         itemArrayList.add(new Item(imageView));
@@ -138,5 +140,5 @@ public class OrderActivity extends AppCompatActivity {
             Log.d(TAG, "onPostExecute: " + item.toString());
             customGridViewAdapter.notifyDataSetChanged();
         }
-    }
+    }*/
 }
