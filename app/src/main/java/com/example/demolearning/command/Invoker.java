@@ -1,5 +1,7 @@
 package com.example.demolearning.command;
 
+import android.content.Context;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,14 +15,16 @@ public class Invoker {
 	OpenListDrinkCommand listDrinkCommand;
 	OpenListBbqCommand listBbqCommand;
 	OpenListDessertCommand listDessertCommand;
+	Context context;
 
-	public Invoker() {
+	public Invoker(Context context) {
+		this.context = context;
 		map = new HashMap<>();
 		receiver = new Receiver();
-		listPizzaCommand = new OpenListPizzaCommand(receiver);
-		listDrinkCommand = new OpenListDrinkCommand(receiver);
-		listBbqCommand = new OpenListBbqCommand(receiver);
-		listDessertCommand = new OpenListDessertCommand(receiver);
+		listPizzaCommand = new OpenListPizzaCommand(receiver, context);
+		listDrinkCommand = new OpenListDrinkCommand(receiver, context);
+		listBbqCommand = new OpenListBbqCommand(receiver, context);
+		listDessertCommand = new OpenListDessertCommand(receiver, context);
 	}
 
 	public void invoker(Integer key) {

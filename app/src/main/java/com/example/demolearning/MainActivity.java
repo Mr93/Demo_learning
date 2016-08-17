@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		btn2.setText(getResources().getString(R.string.listDrink));
 		btn1.setOnClickListener(this);
 		btn2.setOnClickListener(this);
-		invoker = new Invoker();
+		invoker = new Invoker(MainActivity.this);
 		invoker.addPizzaForKey(R.id.btn1);
 		invoker.addDrinkForKey(R.id.btn2);
 	}
