@@ -1,52 +1,69 @@
 package com.example.demolearning;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import com.example.demolearning.command.Invoker;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+	MenuItem pizzaItem, bbqItem;
+	Button btn1, btn2;
+	Invoker invoker;
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		btn1 = (Button) findViewById(R.id.btn1);
+		btn2 = (Button) findViewById(R.id.btn2);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+		init();
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+	private void init() {
+		btn1.setText(getResources().getString(R.string.listPizza));
+		btn2.setText(getResources().getString(R.string.listDrink));
+		btn1.setOnClickListener(this);
+		btn2.setOnClickListener(this);
+		invoker = new Invoker();
+		invoker.addPizzaForKey(R.id.btn1);
+		invoker.addDrinkForKey(R.id.btn2);
+	}
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+		pizzaItem = menu.findItem(R.id.pizza);
+		bbqItem = menu.findItem(R.id.bbq);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.pizza) {
+			invoker.addPizzaForKey(R.id.btn1);
+			invoker.addDrinkForKey(R.id.btn2);
+			btn1.setText(R.string.listPizza);
+			btn2.setText(R.string.listDrink);
+		}else if (id == R.id.bbq){
+			invoker.addBbqForKey(R.id.btn1);
+			invoker.addDessertForKey(R.id.btn2);
+			btn1.setText(R.string.listBbq);
+			btn2.setText(R.string.listDessert);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onClick(View view) {
+		Integer id = view.getId();
+		invoker.invoker(id);
+	}
 }

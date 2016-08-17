@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Demo learning</string>
+    <string name="app_name">PatternDatNa</string>
     <string name="action_settings">Settings</string>
+    <string name="listPizza">Danh sách Pizza</string>
+    <string name="listDrink">Danh sách đồ uống</string>
+    <string name="listBbq">Danh sách Đồ nướng</string>
+    <string name="listDessert">Danh sách món tráng miệng</string>
 </resources>
