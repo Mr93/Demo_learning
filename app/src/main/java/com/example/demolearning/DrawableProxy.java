@@ -18,24 +18,33 @@ import java.io.InputStream;
 /**
  * Created by mamram on 8/16/2016.
  */
-public class DrawableProxy extends Drawable implements Drawable.Callback {
+public class DrawableProxy extends Drawable {
     private static final String TAG = DrawableProxy.class.getSimpleName();
     public Drawable tempDrawable;
     Context context;
     String url;
-    public Canvas mCanvas;
+    CustomCallBack customCallBack;
+    boolean urlLoaded = false;
+    int position;
 
-    public DrawableProxy(Drawable drawable, Context context, String url) {
-        this.tempDrawable = drawable;
+    public DrawableProxy(Context context, String url, CustomCallBack customCallBack, int position) {
+        Log.d(TAG, "DrawableProxy: ");
+        Bitmap imageView = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+        this.tempDrawable = new BitmapDrawable(context.getResources(), imageView);
         this.context = context;
         this.url = url;
+        this.customCallBack = customCallBack;
+        this.position = position;
     }
 
     @Override
-    public void draw(final Canvas canvas) {
+    public void draw(Canvas canvas) {
         if(tempDrawable !=null){
             tempDrawable.draw(canvas);
-            new DownloadImageTask(context).execute(url);
+            if(!urlLoaded){
+                Log.d(TAG, "draw: ");
+                new DownloadImageTask(context).execute(url);
+            }
         }
     }
 
@@ -65,28 +74,6 @@ public class DrawableProxy extends Drawable implements Drawable.Callback {
         }
     }
 
-    @Override
-    public void invalidateDrawable(Drawable drawable) {
-        Log.d(TAG, "invalidateDrawable: aaaaaaaaaaa");
-        onBoundsChange(drawable.getBounds());
-        int w = 50, h = 50;
-
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        Bitmap bmp = Bitmap.createBitmap(w, h, conf); // this creates a MUTABLE bitmap
-        Canvas canvas = new Canvas(bmp);
-        draw(canvas);
-    }
-
-    @Override
-    public void scheduleDrawable(Drawable drawable, Runnable runnable, long l) {
-
-    }
-
-    @Override
-    public void unscheduleDrawable(Drawable drawable, Runnable runnable) {
-
-    }
-
     class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
         Context context;
@@ -97,7 +84,6 @@ public class DrawableProxy extends Drawable implements Drawable.Callback {
 
         @Override
         protected Bitmap doInBackground(String... urls) {
-
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
             try {
@@ -116,10 +102,8 @@ public class DrawableProxy extends Drawable implements Drawable.Callback {
             super.onPostExecute(bitmap);
             Log.d(TAG, "onPostExecute: " + tempDrawable);
             tempDrawable = new BitmapDrawable(context.getResources(), bitmap);
-            Log.d(TAG, "onPostExecute: " + tempDrawable);
-
-            invalidateDrawable(tempDrawable);
-            Toast.makeText(context, "downloaded", Toast.LENGTH_SHORT).show();
+            customCallBack.loaded(tempDrawable, position);
+            urlLoaded = true;
         }
     }
 }

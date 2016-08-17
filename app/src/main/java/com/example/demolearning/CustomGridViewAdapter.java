@@ -25,6 +25,7 @@ public class CustomGridViewAdapter extends ArrayAdapter<Drawable> {
     Context context;
     int layoutResourceId;
     ArrayList<Drawable> data = new ArrayList<>();
+    RecordHolder recordHolder = null;
 
     public CustomGridViewAdapter(Context context, int resource, ArrayList<Drawable> objects) {
         super(context, resource, objects);
@@ -36,8 +37,6 @@ public class CustomGridViewAdapter extends ArrayAdapter<Drawable> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        RecordHolder recordHolder = null;
-
         if(row == null) {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId,parent,false);
@@ -49,16 +48,20 @@ public class CustomGridViewAdapter extends ArrayAdapter<Drawable> {
         }else {
             recordHolder = (RecordHolder)row.getTag();
         }
-        recordHolder.imageView.setImageDrawable(data.get(position));
-        final RecordHolder finalRecordHolder = recordHolder;
+        recordHolder.imageView.setImageDrawable(data.get(position).getCurrent());
         recordHolder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finalRecordHolder.imageView.setImageDrawable(data.get(position));
-                Log.d(TAG, "onClick: " + data.get(position));
+                Toast.makeText(context, "Order success", Toast.LENGTH_SHORT).show();
             }
         });
         return row;
+    }
+
+    public void loaded(Drawable drawable, int position) {
+        data.remove(position);
+        data.add(position, drawable);
+        notifyDataSetChanged();
     }
 
     class RecordHolder {
