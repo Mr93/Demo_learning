@@ -54,20 +54,22 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     private void createData(String type){
+	    setTitle(type);
         if(type.equalsIgnoreCase(PIZZA)){
             createPizzaData(urlsPizza);
-            toolbar.setTitle(PIZZA);
         }else if (type.equalsIgnoreCase(DRINK)){
             createHotDrinkData();
-            toolbar.setTitle(DRINK);
         }else if (type.equalsIgnoreCase(BBQ)){
             createBBQData();
-            toolbar.setTitle(BBQ);
         }else {
             createDessertData();
-            toolbar.setTitle(DESSERT);
         }
     }
+
+	private void setTitle(String title){
+		Log.d(TAG, "setTitle:  = " + title);
+		getSupportActionBar().setTitle(title);
+	}
 
     private void createPizzaData(String[] urls){
         for(int i = 0; i<urls.length; i++){
