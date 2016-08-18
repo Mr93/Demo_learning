@@ -41,10 +41,8 @@ public class DrawableProxy extends Drawable {
     public void draw(Canvas canvas) {
         if(tempDrawable !=null){
             tempDrawable.draw(canvas);
-            if(!urlLoaded){
                 Log.d(TAG, "draw: ");
                 new DownloadImageTask(context).execute(url);
-            }
         }
     }
 
@@ -84,9 +82,13 @@ public class DrawableProxy extends Drawable {
 
         @Override
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
+	        Bitmap mIcon11 = null;
+	        String urldisplay = urls[0];
+	        if(OrderActivity.cancelAsync){
+		        return mIcon11;
+	        }
+
+	        try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
                 in.close();
@@ -101,9 +103,11 @@ public class DrawableProxy extends Drawable {
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
             Log.d(TAG, "onPostExecute: " + tempDrawable);
-            tempDrawable = new BitmapDrawable(context.getResources(), bitmap);
-            customCallBack.loaded(tempDrawable, position);
-            urlLoaded = true;
+	        if(bitmap != null){
+		        tempDrawable = new BitmapDrawable(context.getResources(), bitmap);
+		        customCallBack.loaded(tempDrawable, position);
+		        urlLoaded = true;
+	        }
         }
     }
 }

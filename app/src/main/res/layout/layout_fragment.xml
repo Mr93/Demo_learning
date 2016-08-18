@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="match_parent">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -9,5 +9,17 @@
         android:textStyle="bold"
         android:layout_centerInParent="true"
         android:id="@+id/textView"/>
+
+    <ImageView
+            android:id="@+id/img_fragment"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary"/>
+
+    <ImageView
+            android:id="@+id/img_fragment_1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary"/>
 
 </LinearLayout>

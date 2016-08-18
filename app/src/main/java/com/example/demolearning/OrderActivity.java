@@ -34,12 +34,23 @@ public class OrderActivity extends AppCompatActivity {
 	public static final String BBQ = "BBQ";
 	public static final String DESSERT = "DESSERT";
     private Toolbar toolbar;
+	public static boolean cancelAsync = false;
     String[] urlsPizza = {"http://thisbeautifuldayblog.com/wp-content/uploads/2015/12/chicken-pizza-120x120.jpg",
             "http://anekatempatwisata.com/wp-content/uploads/2014/01/beeferoni-mushroom-pino-pizza-120x120.jpg",
             "http://www.poweredbybling.com/wp-content/uploads/2016/01/BBQ-Chicken-Pizza-120x120.jpg",
             "https://insideretail.sg/wp-content/uploads/2015/05/Firagos-pizza-120x120.png",
             "http://www.eatwellwithjanel.com/wp-content/uploads/2013/02/pizza-120x120.jpg",
-            "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png"};
+            "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png",
+		    "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png",
+		    "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png",
+		    "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png",
+		    "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png",
+		    "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png",
+		    "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png",
+		    "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png",
+		    "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png",
+		    "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png",
+		    "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png"};
 	String[] urlsDrink = {"http://thisbeautifuldayblog.com/wp-content/uploads/2015/12/chicken-pizza-120x120.jpg",
             "http://anekatempatwisata.com/wp-content/uploads/2014/01/beeferoni-mushroom-pino-pizza-120x120.jpg",
             "http://www.poweredbybling.com/wp-content/uploads/2016/01/BBQ-Chicken-Pizza-120x120.jpg",
@@ -59,14 +70,13 @@ public class OrderActivity extends AppCompatActivity {
 			"http://www.eatwellwithjanel.com/wp-content/uploads/2013/02/pizza-120x120.jpg",
 			"http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png"};
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(this.getResources().getColor(R.color.textColorPrimary));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
         Intent intent = getIntent();
         String type = intent.getStringExtra(TYPE);
 	    classifyData(type);
@@ -103,5 +113,29 @@ public class OrderActivity extends AppCompatActivity {
 			}, i);
 			itemArrayList.add((drawable));
 		}
+	}
+
+	/**
+	 * Dispatch onPause() to fragments.
+	 */
+	@Override
+	protected void onPause() {
+		super.onPause();
+		cancelAsync = true;
+	}
+
+	/**
+	 * Dispatch onResume() to fragments.  Note that for better inter-operation
+	 * with older versions of the platform, at the point of this call the
+	 * fragments attached to the activity are <em>not</em> resumed.  This means
+	 * that in some cases the previous state may still be saved, not allowing
+	 * fragment transactions that modify the state.  To correctly interact
+	 * with fragments in their proper state, you should instead override
+	 * {@link #onResumeFragments()}.
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		cancelAsync = false;
 	}
 }
