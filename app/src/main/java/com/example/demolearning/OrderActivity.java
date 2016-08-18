@@ -40,13 +40,24 @@ public class OrderActivity extends AppCompatActivity {
             "https://insideretail.sg/wp-content/uploads/2015/05/Firagos-pizza-120x120.png",
             "http://www.eatwellwithjanel.com/wp-content/uploads/2013/02/pizza-120x120.jpg",
             "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png"};
-
-//	String[] urlsPizza = {"http://itspizzatime.ca/wp-content/uploads/2015/09/4791207-9790062099-Pizza1.jpg",
-//			"http://nitzapizza.com/wp-content/uploads/2011/07/maxresdefault-1.jpg",
-//			"https://i.kinja-img.com/gawker-media/image/upload/wafswectpmbr0zmug9ly.jpg",
-//			"http://www.athenaspizzaamherst.com/wp-content/uploads/2013/05/front-1-1008x500.jpg",
-//			"http://www.barrospizza.com/wp-content/uploads/2013/10/menu-pizza.png",
-//			"http://www.pizzahut-tt.com/wp-content/uploads/2013/06/pizza-hut-trinidad-and-tobago-pepperoni-lovers-pizza.png"};
+	String[] urlsDrink = {"http://thisbeautifuldayblog.com/wp-content/uploads/2015/12/chicken-pizza-120x120.jpg",
+            "http://anekatempatwisata.com/wp-content/uploads/2014/01/beeferoni-mushroom-pino-pizza-120x120.jpg",
+            "http://www.poweredbybling.com/wp-content/uploads/2016/01/BBQ-Chicken-Pizza-120x120.jpg",
+            "https://insideretail.sg/wp-content/uploads/2015/05/Firagos-pizza-120x120.png",
+            "http://www.eatwellwithjanel.com/wp-content/uploads/2013/02/pizza-120x120.jpg",
+            "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png"};
+	String[] urlsBbq = {"http://thisbeautifuldayblog.com/wp-content/uploads/2015/12/chicken-pizza-120x120.jpg",
+            "http://anekatempatwisata.com/wp-content/uploads/2014/01/beeferoni-mushroom-pino-pizza-120x120.jpg",
+            "http://www.poweredbybling.com/wp-content/uploads/2016/01/BBQ-Chicken-Pizza-120x120.jpg",
+            "https://insideretail.sg/wp-content/uploads/2015/05/Firagos-pizza-120x120.png",
+            "http://www.eatwellwithjanel.com/wp-content/uploads/2013/02/pizza-120x120.jpg",
+            "http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png"};
+	String[] urlsDessert = {"http://thisbeautifuldayblog.com/wp-content/uploads/2015/12/chicken-pizza-120x120.jpg",
+			"http://anekatempatwisata.com/wp-content/uploads/2014/01/beeferoni-mushroom-pino-pizza-120x120.jpg",
+			"http://www.poweredbybling.com/wp-content/uploads/2016/01/BBQ-Chicken-Pizza-120x120.jpg",
+			"https://insideretail.sg/wp-content/uploads/2015/05/Firagos-pizza-120x120.png",
+			"http://www.eatwellwithjanel.com/wp-content/uploads/2013/02/pizza-120x120.jpg",
+			"http://www.genuinekentucky.com/wp-content/uploads/2013/09/Coppertop-Old-World-Style-Pizza-120x120.png"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,57 +69,28 @@ public class OrderActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         Intent intent = getIntent();
         String type = intent.getStringExtra(TYPE);
-//        createData(type);
 	    classifyData(type);
         gridView = (GridView)findViewById(R.id.gridView);
         customGridViewAdapter = new CustomGridViewAdapter(this, R.layout.layout_item_gridview, itemArrayList);
         gridView.setAdapter(customGridViewAdapter);
     }
 
-	private void createData(String type){
+	private void classifyData(String type){
 		setTitle(type);
 		if(type.equalsIgnoreCase(PIZZA)){
-			createPizzaData(urlsPizza);
-		}else if (type.equalsIgnoreCase(DRINK)){
-			createHotDrinkData();
-		}else if (type.equalsIgnoreCase(BBQ)){
-			createBBQData();
-		}else {
-			createDessertData();
-		}
-	}
-
-	private void classifyData(String type){
-		if(type.equalsIgnoreCase(PIZZA)){
 			createData(urlsPizza);
-			toolbar.setTitle(PIZZA);
-		}else if (type.equalsIgnoreCase(HOT_POT)){
-			createHotPotData();
-			toolbar.setTitle(HOT_POT);
+		}else if (type.equalsIgnoreCase(DRINK)){
+			createData(urlsDrink);
 		}else if (type.equalsIgnoreCase(BBQ)){
-			createBBQData();
-			toolbar.setTitle(BBQ);
-		}else {
-			createBeverageData();
-			toolbar.setTitle(BEVERAGE);
+			createData(urlsBbq);
+		}else if (type.equalsIgnoreCase(DESSERT)) {
+			createData(urlsDessert);
 		}
 	}
 
 	private void setTitle(String title){
 		Log.d(TAG, "setTitle:  = " + title);
 		getSupportActionBar().setTitle(title);
-	}
-
-	private void createPizzaData(String[] urls){
-		for(int i = 0; i<urls.length; i++){
-			Bitmap imageView = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
-			Item item = new Item(imageView);
-			itemArrayList.add(item);
-		}
-		for(int i = 0; i < urls.length; i++){
-			Log.d(TAG, "createPizzaData: " + itemArrayList.get(i));
-			new DownloadImageTask(this, itemArrayList.get(i)).execute(urls[i]);
-		}
 	}
 
 	private void createData(String[] urls){
@@ -122,18 +104,4 @@ public class OrderActivity extends AppCompatActivity {
 			itemArrayList.add((drawable));
 		}
 	}
-
-    private void createHotDrinkData(){
-
-    }
-
-    private void createBBQData(){
-
-    }
-
-    private void createDessertData(){
-
-    }
-
-
 }
