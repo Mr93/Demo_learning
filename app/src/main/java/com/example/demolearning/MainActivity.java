@@ -1,5 +1,6 @@
 package com.example.demolearning;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,7 +21,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		setContentView(R.layout.activity_main);
 		btn1 = (Button) findViewById(R.id.btn1);
 		btn2 = (Button) findViewById(R.id.btn2);
-
 		init();
 	}
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		btn2.setText(getResources().getString(R.string.listDrink));
 		btn1.setOnClickListener(this);
 		btn2.setOnClickListener(this);
-		invoker = new Invoker(MainActivity.this);
+		invoker = Invoker.getInstance(this);
 		invoker.addPizzaForKey(R.id.btn1);
 		invoker.addDrinkForKey(R.id.btn2);
 	}

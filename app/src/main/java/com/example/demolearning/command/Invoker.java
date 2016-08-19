@@ -3,7 +3,6 @@ package com.example.demolearning.command;
 import android.content.Context;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by DucDat on 8/12/2016.
@@ -16,8 +15,16 @@ public class Invoker {
 	OpenListBbqCommand listBbqCommand;
 	OpenListDessertCommand listDessertCommand;
 	Context context;
+	private static Invoker instance;
 
-	public Invoker(Context context) {
+	public static Invoker getInstance(Context context){
+		if (instance == null){
+			instance = new Invoker(context);
+		}
+		return instance;
+	}
+
+	private Invoker(Context context) {
 		this.context = context;
 		map = new HashMap<>();
 		receiver = new Receiver();
