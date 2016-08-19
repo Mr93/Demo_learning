@@ -13,7 +13,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.InputStream;
+import java.io.*;
+import java.nio.ByteBuffer;
 
 /**
  * Created by mamram on 8/16/2016.
@@ -26,23 +27,37 @@ public class DrawableProxy extends Drawable {
     CustomCallBack customCallBack;
     boolean urlLoaded = false;
     int position;
+	String type;
 
-    public DrawableProxy(Context context, String url, CustomCallBack customCallBack, int position) {
+    public DrawableProxy(Context context, String url, CustomCallBack customCallBack, int position, String type) {
         Log.d(TAG, "DrawableProxy: ");
-        Bitmap imageView = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
-        this.tempDrawable = new BitmapDrawable(context.getResources(), imageView);
+	    initDrawable(context, position, type);
         this.context = context;
         this.url = url;
         this.customCallBack = customCallBack;
         this.position = position;
+	    this.type = type;
     }
 
-    @Override
+	private void initDrawable(Context context, int position, String type) {
+		File imgFile = new File(context.getFilesDir(), type+position);
+		if(!imgFile.exists()) {
+			Bitmap imageView = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+			this.tempDrawable = new BitmapDrawable(context.getResources(), imageView);
+		}else {
+			Log.d(TAG, "createData: 2");
+			this.tempDrawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeFile(imgFile.getAbsolutePath()));
+			this.urlLoaded = true;
+		}
+	}
+
+	@Override
     public void draw(Canvas canvas) {
         if(tempDrawable !=null){
             tempDrawable.draw(canvas);
-                Log.d(TAG, "draw: ");
-                new DownloadImageTask(context).execute(url);
+	        if(!urlLoaded){
+		        new DownloadImageTask(context).execute(url);
+	        }
         }
     }
 
@@ -104,6 +119,18 @@ public class DrawableProxy extends Drawable {
             super.onPostExecute(bitmap);
             Log.d(TAG, "onPostExecute: " + tempDrawable);
 	        if(bitmap != null){
+		        String fileName = type+position;
+		        File file = new File(context.getFilesDir(), fileName);
+		        FileOutputStream outputStream;
+		        try {
+			        outputStream = new FileOutputStream(file);
+			        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+			        outputStream.close();
+		        } catch (FileNotFoundException e) {
+			        e.printStackTrace();
+		        } catch (IOException e) {
+			        e.printStackTrace();
+		        }
 		        tempDrawable = new BitmapDrawable(context.getResources(), bitmap);
 		        customCallBack.loaded(tempDrawable, position);
 		        urlLoaded = true;
