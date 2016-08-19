@@ -7,16 +7,23 @@ import android.content.Context;
  */
 public class OpenListPizzaCommand implements ICommand {
 
-	Receiver receiver;
 	Context context;
+	public static OpenListPizzaCommand instance;
 
-	public OpenListPizzaCommand(Receiver receiver, Context context){
+	public static OpenListPizzaCommand getInstance(Context context){
+		if (instance == null){
+			instance = new OpenListPizzaCommand(context);
+		}
+		return instance;
+	}
+
+	public OpenListPizzaCommand(Context context){
 		this.context = context;
-		this.receiver = receiver;
 	}
 
 	@Override
 	public void execute() {
-		receiver.openListPizza(context);
+		Receiver.getInstance().openListPizza(context);
 	}
 }
+

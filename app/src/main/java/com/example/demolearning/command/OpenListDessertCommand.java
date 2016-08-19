@@ -7,17 +7,23 @@ import android.content.Context;
  */
 public class OpenListDessertCommand implements ICommand {
 
-	Receiver receiver;
 	Context context;
+	public static OpenListDessertCommand instance;
 
-	public OpenListDessertCommand(Receiver receiver, Context context) {
+	public static OpenListDessertCommand getInstance(Context context){
+		if (instance == null){
+			instance = new OpenListDessertCommand(context);
+		}
+		return instance;
+	}
+
+	public OpenListDessertCommand(Context context){
 		this.context = context;
-		this.receiver = receiver;
 	}
 
 	@Override
 	public void execute() {
-		receiver.openListDessert(context);
+		Receiver.getInstance().openListDessert(context);
 	}
 }
 

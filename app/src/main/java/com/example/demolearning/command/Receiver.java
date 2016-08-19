@@ -11,6 +11,16 @@ import com.example.demolearning.OrderActivity;
 public class Receiver {
 
 	private static final String TAG = Receiver.class.getSimpleName();
+	public static Receiver instance;
+
+	public static Receiver getInstance(){
+		if (instance == null){
+			instance = new Receiver();
+		}
+		return instance;
+	}
+
+	private Receiver(){}
 
 	public void openListPizza(Context context) {
 		Log.d(TAG, "openListPizza: ");

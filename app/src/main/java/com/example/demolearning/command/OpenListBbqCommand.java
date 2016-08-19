@@ -7,16 +7,22 @@ import android.content.Context;
  */
 public class OpenListBbqCommand  implements ICommand {
 
-	Receiver receiver;
 	Context context;
+	public static OpenListBbqCommand instance;
 
-	public OpenListBbqCommand(Receiver receiver, Context context){
+	public static OpenListBbqCommand getInstance(Context context){
+		if (instance == null){
+			instance = new OpenListBbqCommand(context);
+		}
+		return instance;
+	}
+
+	public OpenListBbqCommand(Context context){
 		this.context = context;
-		this.receiver = receiver;
 	}
 
 	@Override
 	public void execute() {
-		receiver.openListBbq(context);
+		Receiver.getInstance().openListBbq(context);
 	}
 }

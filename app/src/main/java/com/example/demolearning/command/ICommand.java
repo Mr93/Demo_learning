@@ -6,3 +6,4 @@ package com.example.demolearning.command;
 public interface ICommand {
 	void execute();
 }
+

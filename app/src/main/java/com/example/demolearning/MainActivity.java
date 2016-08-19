@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import com.example.demolearning.command.Invoker;
+import com.example.demolearning.command.*;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		btn1.setOnClickListener(this);
 		btn2.setOnClickListener(this);
 		invoker = Invoker.getInstance(this);
-		invoker.addPizzaForKey(R.id.btn1);
-		invoker.addDrinkForKey(R.id.btn2);
+		invoker.addKey(R.id.btn1, OpenListPizzaCommand.getInstance(this));
+		invoker.addKey(R.id.btn2, OpenListDrinkCommand.getInstance(this));
 	}
 
 
@@ -48,13 +48,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.pizza) {
-			invoker.addPizzaForKey(R.id.btn1);
-			invoker.addDrinkForKey(R.id.btn2);
+			invoker.addKey(R.id.btn1, OpenListPizzaCommand.getInstance(this));
+			invoker.addKey(R.id.btn2, OpenListDrinkCommand.getInstance(this));
 			btn1.setText(R.string.listPizza);
 			btn2.setText(R.string.listDrink);
 		}else if (id == R.id.bbq){
-			invoker.addBbqForKey(R.id.btn1);
-			invoker.addDessertForKey(R.id.btn2);
+			invoker.addKey(R.id.btn1, OpenListBbqCommand.getInstance(this));
+			invoker.addKey(R.id.btn2, OpenListDessertCommand.getInstance(this));
 			btn1.setText(R.string.listBbq);
 			btn2.setText(R.string.listDessert);
 		}
